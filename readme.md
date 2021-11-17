@@ -64,12 +64,6 @@ func main() {
 
     snowballClient := rabbit.NewSnowball(config)
 
-    snowballClient.Publish("test.something", snowball.Publishable{
-        Body: Model{
-            Test: 1234,
-        },
-    })
-
     // You should make your own channel
     forever := make(chan bool)
 
