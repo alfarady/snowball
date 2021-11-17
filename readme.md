@@ -57,37 +57,37 @@ The below example will consume message by routing key:
 ```go
 // Your main function
 func main() {
-	config := snowball.Config{
-		ConnectionString: "amqp://rabbitmq:rabbitmq@localhost:5672/",
-		MaxRetry:         1,
-	}
+    config := snowball.Config{
+        ConnectionString: "amqp://rabbitmq:rabbitmq@localhost:5672/",
+        MaxRetry:         1,
+    }
 
-	snowballClient := rabbit.NewSnowball(config)
+    snowballClient := rabbit.NewSnowball(config)
 
-	snowballClient.Publish("test.something", snowball.Publishable{
-		Body: Model{
-			Test: 1234,
-		},
-	})
+    snowballClient.Publish("test.something", snowball.Publishable{
+        Body: Model{
+            Test: 1234,
+        },
+    })
 
     // You should make your own channel
-	forever := make(chan bool)
+    forever := make(chan bool)
 
     // Call using go routines
-	go func() {
-		snowballClient.Listen("test.something", Handle)
-	}()
+    go func() {
+        snowballClient.Listen("test.something", Handle)
+    }()
 
     fmt.Print("[*] Waiting for messages. To exit press CTRL+C")
-	<-forever
+    <-forever
 }
 
 // Handler function, this func will called when message coming
 func Handle(message snowball.Listenable) error {
-	fmt.Print(message.Body)
+    fmt.Print(message.Body)
 
     // Return nil means there is no need to retry, you can return err to retry the queue
-	return nil
+    return nil
 }
 ```
 
